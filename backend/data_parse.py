@@ -1,17 +1,25 @@
 import pandas as pd
-import numpy as np
 
-r = "Request Time"
-a = "Appointment Time"
+request_date = "Request Date"
+request_time = "Request Time"
+appt_date = "Appointment Date"
+appt_time = "Appointment Time"
+vehicle_type = "Vehicle Type"
+walk_in = "Walk-In"
 
-header = [r, a, "Vehicle Type"]
+header = [request_date, appt_date, vehicle_type]
 df = pd.read_csv("sap_datafile.csv", names=header)
 
-df[r] = pd.to_datetime(df[r])
-df[a] = pd.to_datetime(df[a])
-df.sort_values(by=[a, r], inplace=True)
+df[walk_in] = df[request_date] == df[appt_date]
 
-reserved, walk_in = [x for _, x in df.groupby(df[r] == df[a])]
+df[request_date] = pd.to_datetime(df[request_date])
+df[appt_date] = pd.to_datetime(df[appt_date])
+df.sort_values(by=[appt_date, request_date], inplace=True)
 
-reserved = reserved.to_numpy()
-walk_in = walk_in.to_numpy()
+df[request_date] = df[request_date].dt.strftime("%Y-%m-%d %X")
+df[appt_date] = df[appt_date].dt.strftime("%Y-%m-%d %X")
+
+df[[request_date, request_time]] = df[request_date].str.split(" ", n=1, expand=True)
+df[[appt_date, appt_time]] = df[appt_date].str.split(" ", n=1, expand=True)
+
+df = df[[appt_date, appt_time, request_date, request_time, vehicle_type, walk_in]]
