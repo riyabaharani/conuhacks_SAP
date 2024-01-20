@@ -1,0 +1,82 @@
+h1 {
+    text-align: center;
+}
+
+h4 {
+    text-align: center;
+    color: #1c30dd;
+}
+
+.column {
+    float: left;
+    padding: 10px;
+    height: 300px; /* Should be removed. Only for demonstration */
+  }
+  
+  .left {
+    width: 20%;
+  }
+  
+  .right {
+    width: 60%;
+  }
+  
+  /* Clear floats after the columns */
+  .row:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+
+  body {
+    font-family: 'Times New Roman', Times, serif, sans-serif;
+  }
+
+  .calendar-container {
+    max-width: 600px;
+    margin: 20px auto;
+    overflow: hidden;
+  }
+
+  .carousel-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .carousel {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .date {
+    flex: 0 0 auto;
+    width: 100px;
+    height: 80px;
+    background-color: #f0f0f0;
+    border: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  .date:hover {
+    background-color: #35a2d1;
+  }
+
+  .event-info {
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid #ddd;
+  }
+
+  .arrow {
+    cursor: pointer;
+    font-size: 24px;
+    
+  }
