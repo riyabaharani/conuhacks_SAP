@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Tire_Shop</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="script.js" defer></script>
+</head>
+
+<body>
+    <div class="nav">
+        <h4>SAP</h4>
+        <ul>
+            <li>Conuhacks VIII</li>
+            <li><a href="#footer">About us</a></li>
+        </ul>
+    </div>
+    <div class="header">
+        <h1>Tire Change Shop</h1>
+        <div class="information">
+            <div class="info">
+                <p>Compact Cars</p>
+                <p>30 minutes servicing time</p>
+                <p>Charge: $150 </p>
+            </div>
+            <div class="info">
+                <p>Medium Cars</p>
+                <p>30 minutes servicing time</p>
+                <p>Charge: $150 </p>
+            </div>
+            <div class="info">
+                <p>Full-Size Cars</p>
+                <p>30 minutes servicing time</p>
+                <p>Charge: $150 </p>
+            </div>
+            <div class="info">
+                <p>Class 1 Trucks</p>
+                <p>1 hour servicing time</p>
+                <p>Charge: $250 </p>
+            </div>
+            <div class="info">
+                <p>Class 2 Trucks</p>
+                <p>2 hour servicing time</p>
+                <p>Charge: $700 </p>
+            </div>
+        </div>
+
+    </div>
+    <div class="container">
+        <div class="column left">
+            <div class="pie">
+            </div>
+            <div>Actual Revenue: <span id="actualRevenue"></span></div>
+            <div>Lost Revenue: <span id="lostRevenue"></span></div>
+        </div>
+        <div class="column right">
+            <h4>Pick the date</h4>
+            <div class="calendar-container">
+                <div class="carousel-wrapper">
+                    <div class="arrow" onclick="scrollDates(-1)">←</div>
+                    <div class="carousel" id="dateCarousel">
+                    </div>
+                    <div class="arrow" onclick="scrollDates(1)">→</div>
+                </div>
+            </div>
+            <p>Date selected: <span id="dateSelected">2022-10-01</span></p>
+            <table class="table table-bordered displayInfo">
+                <thead>
+                    <th>Vehicle Type</th>
+                    <th># of customers served</th>
+                    <th># of customers declines</th>
+                </thead>
+                <tr>
+                    <td>Compact Cars</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Medium Cars</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Full-size Cars</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Class 1 Trucks</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Class 2 Trucks</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
+            <div class="moneyInfoDaily"><span>Money Gained this day: <span id="moneyGained"></span></span>
+                <span>Money lost this day: <span id="moneyLost"></span></span>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
