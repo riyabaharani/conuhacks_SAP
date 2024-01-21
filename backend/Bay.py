@@ -85,11 +85,13 @@ for i in range(1, 11):
     else:
         available_walkin_bays.append(Bay(i, None))
 
-result = []
+result = {}
 turned_away = {}
 money_lost = 0
 money_made = 0
 cars_served = {}
+total_revenue = 0
+total_loss = 0
 prev_date = df.iloc[0][0].date()
 
 for i in range(len(df.index)):
@@ -99,8 +101,8 @@ for i in range(len(df.index)):
     vh_type = row[vehicle_type]
     bay = None
     if prev_date != curr_date:
-        result.append({prev_date.strftime("%Y-%m-%d"): {"money_lost": money_lost, "money_made": money_made,
-                                                        "cars_served": cars_served, "turned_away": turned_away}})
+        result[prev_date.strftime("%Y-%m-%d")] = {"money_lost": money_lost, "money_made": money_made,
+                                                        "cars_served": cars_served, "turned_away": turned_away}
         money_lost, money_made = 0, 0
         cars_served, turned_away = {}, {}
         prev_date = curr_date
@@ -113,13 +115,15 @@ for i in range(len(df.index)):
         bay.end_ts = calc_next_available_ts(curr_date_ts, vh_type)
         cars_served[vh_type] = cars_served.get(vh_type, 0) + 1
         money_made += money_map[vh_type]
+        total_revenue += money_map[vh_type]
     else:
         turned_away[vh_type] = turned_away.get(vh_type, 0) + 1
         money_lost += money_map[vh_type]
-result.append({curr_date.strftime("%Y-%m-%d"): {"money_lost": money_lost, "money_made": money_made,
-                                                "cars_served": cars_served, "turned_away": turned_away}})
-result = {"datetime": result}
-# print(result)
+        total_loss += money_map[vh_type]
+result[curr_date.strftime("%Y-%m-%d")] = {"money_lost": money_lost, "money_made": money_made,
+                                                "cars_served": cars_served, "turned_away": turned_away}
+result["revenue"] = total_revenue
+result["loss"] = total_loss
 
 if __name__ == "__main__":
     with open("users.json", "w") as outfile:
