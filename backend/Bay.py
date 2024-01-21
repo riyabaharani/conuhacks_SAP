@@ -1,5 +1,7 @@
 from data_parse import appt_date, vehicle_type, walk_in, df
 from datetime import timedelta
+import json
+
 
 class Bay:
     def __init__(self, id, end_ts):
@@ -44,7 +46,7 @@ def walk_into_reserve(appoint_ts, index_df, vh_type):
         if not bay.end_ts or appoint_ts >= bay.end_ts:
             valid_bays.append(bay)
 
-    for i in range(index_df+1, len(df.index)):
+    for i in range(index_df + 1, len(df.index)):
         row = df.iloc[i]
         ts = row[appt_date]
         if not valid_bays:
@@ -83,7 +85,7 @@ for i in range(1, 11):
     else:
         available_walkin_bays.append(Bay(i, None))
 
-result = {}
+result = []
 turned_away = {}
 money_lost = 0
 money_made = 0
@@ -96,17 +98,17 @@ for i in range(len(df.index)):
     curr_date = curr_date_ts.date()
     vh_type = row[vehicle_type]
     bay = None
-    if curr_date not in result:
-        result[prev_date] = {"money_lost": money_lost, "money_made": money_made,
-                                "cars_served": cars_served, "turned_away": turned_away}
+    if prev_date != curr_date:
+        result.append({prev_date.strftime("%Y-%m-%d"): {"money_lost": money_lost, "money_made": money_made,
+                                                        "cars_served": cars_served, "turned_away": turned_away}})
         money_lost, money_made = 0, 0
         cars_served, turned_away = {}, {}
         prev_date = curr_date
     if not row[walk_in]:
         # print("Reservation")
-        bay = find_reserve_bay(curr_date_ts)          
+        bay = find_reserve_bay(curr_date_ts)
     else:
-        bay = find_walk_in_bay(curr_date_ts, vh_type, i)             
+        bay = find_walk_in_bay(curr_date_ts, vh_type, i)
     if bay:
         bay.end_ts = calc_next_available_ts(curr_date_ts, vh_type)
         cars_served[vh_type] = cars_served.get(vh_type, 0) + 1
@@ -114,5 +116,11 @@ for i in range(len(df.index)):
     else:
         turned_away[vh_type] = turned_away.get(vh_type, 0) + 1
         money_lost += money_map[vh_type]
-result[curr_date] = {"money_lost": money_lost, "money_made": money_made,
-                    "cars_served": cars_served, "turned_away": turned_away}
+result.append({curr_date.strftime("%Y-%m-%d"): {"money_lost": money_lost, "money_made": money_made,
+                                                "cars_served": cars_served, "turned_away": turned_away}})
+result = {"datetime": result}
+# print(result)
+
+if __name__ == "__main__":
+    with open("users.json", "w") as outfile:
+        json.dump(result, outfile, indent=4)
